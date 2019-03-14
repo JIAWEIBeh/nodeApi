@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport">
+	<title>moreClick</title>
+	<script src="./jq.js"></script>
+	<style type="text/css">
+		body{
+			margin: 0px;
+			padding:0px;
+		}
+		.contents{
+			grid-template-columns: repeat(3, calc(100% / 3));/*行 repeat函数生成三个相同的值*/
+        	grid-template-rows: repeat(3, calc(100% / 3));/*列*/
+			display: grid;
+		}
+		.contents .grid{
+			border: 1px #000 solid;
+		}
+	</style>
+</head>
+<body>
+	<div class="contents">
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+		<div class="grid"></div>
+	</div>
+	<script type="text/javascript">
+		window.onresize = () => {
+			$('.contents').css('height',(document.documentElement.clientHeight-2)/4+'px');
+			$('.contents').css('width',(document.documentElement.clientWidth-2)/8+'px');
+		}
+
+		window.onload = () => {
+			onresize()
+			var urls = 'http://172.16.13.177:3000/getColor?num=9';
+			var http = new HttpQuest();
+			for(var x = 0;x<100;x++){
+				let xs = x;
+				setTimeout(function(){
+					http.init(urls,data => {
+						console.log(xs,new Date().getTime())
+						for(let i = 0;i<9;i++){
+							$('.grid').elements[i].setAttribute('style','background-color: '+data.data.color[i])
+						}
+					},data => {
+						debugger
+					},"Get");
+				},x*10)
+			}
+		}
+	</script>
+</body>
+</html>
